@@ -159,7 +159,9 @@ end
 --BULLET COLLISION WITH STATIC OBJECTS FUNC SECT---
 ----------------------------------------------------
 -- checks the squares that the bullet travels
+-- square is vt[2], used for square bullet is at
 -- this function determines whether bullets should "break" meaning they stop, pretty much a collision checker
+--[[
 -- bullet square, dirc, bullet offset, player offset, nonsfx
 function Advanced_trajectory.checkiswallordoor(square,angle,bulletPosition,playerPosition,nosfx)
     --print("----SQUARE---: ",   square:getX(), "  //  ", square:getY())
@@ -191,7 +193,9 @@ function Advanced_trajectory.checkiswallordoor(square,angle,bulletPosition,playe
 
     --print("bulletPos: ",   bulletPosX, "  //  ", bulletPosY)
     --print("playerPos: ",   playerPosX , "  //  ", playerPosY)
+]]--
 
+function Advanced_trajectory.checkiswallordoor(square,angle,postion,postion2,nosfx)
     -- returns an array of objects in that square, for loop and filter it to get what you want
     local objects = square:getObjects()
     if objects then
@@ -204,36 +208,29 @@ function Advanced_trajectory.checkiswallordoor(square,angle,bulletPosition,playe
                 if Properties then
 
                     local wallN = Properties:Is(IsoFlagType.WallN)
-                    local doorN = Properties:Is(IsoFlagType.doorN)
-
                     local wallNW = Properties:Is(IsoFlagType.WallNW)
                     local wallSE = Properties:Is(IsoFlagType.WallSE)
-
                     local wallW = Properties:Is(IsoFlagType.WallW)
-                    local doorW = Properties:Is(IsoFlagType.doorW)
-                    
-                    
+
+                    if wallN or wallNW or wallSE or wallW then
+                        print("Wall N/NW/SE/W: ", wallN, "/", wallNW, "/", wallSE, "/", wallW)
+                        return true
+                    end
+
+                    --local doorN = Properties:Is(IsoFlagType.doorN)
+                    --local doorW = Properties:Is(IsoFlagType.doorW)
                     --local doorWallN = Properties:Is(IsoFlagType.doorWallN)
                     --local doorWallW = Properties:Is(IsoFlagType.doorWallW)
-
-                    --[[
-                    if wallN or wallNW or wallSE or wallW then
-                        print("****Wall N/NW/SE/W****: ", wallN, "/", wallNW, "/", wallSE, "/", wallW)
-                        --return true
-                    end
-                    
-                    if doorN or doorW then
-                        print("****Door N/W****: ", doorN, "/", doorW)
-                    end
-
-                    if doorWallN or doorWallW then
-                        print("****doorWallN/doorWallW****: ", doorWallN, "/", doorWallW)
-                        --return true
-                    end
-                    ]]
+                    --if doorN or doorW or doorWallN or doorWallW then
+                    --    print("Door N/W/WallN/WallW: ", doorN, "/", doorW, "/", doorWallN, "/", doorWallW)
+                    --end
+                    --if instanceof(locobject,"IsoWindow") then
+                    --    print("Was at a window")
+                    --end
 
                     -- if the locoobject is "IsoWindow" which is a class and it's not smashed, smash it
-                    if instanceof(locobject,"IsoWindow") and not locobject:isSmashed() and not locobject:IsOpen() then
+                    -- if instanceof(locobject,"IsoWindow") and not locobject:isSmashed() and not locobject:IsOpen() then
+                    if instanceof(locobject,"IsoWindow") and not locobject:isSmashed() then
 
                         if nosfx then return true end
                         locobject:setSmashed(true)
@@ -241,6 +238,7 @@ function Advanced_trajectory.checkiswallordoor(square,angle,bulletPosition,playe
                         return true
                     end
 
+                    --[[
                     local isAngleTrue = false
 
                     if wallNW then
@@ -252,12 +250,18 @@ function Advanced_trajectory.checkiswallordoor(square,angle,bulletPosition,playe
                         (angle<=90 and angle>=0) and (playerPosY  < square:getY() or playerPosX  < square:getX()) or
                         (angle<=0 and angle>=-45) and (playerPosY  > square:getY() or playerPosX  < square:getX())
                         then
-                            --print("----Facing outside into wallNW----")
+                        --print("----Facing outside into wallNW----")
+
+                    ]]--
+
+                    local intdel = 0.25
+                    if Properties:Is(IsoFlagType.WallNW)then
+                        if postion[2]  < square:getY() + intdel  and postion[1]  < square:getX() + intdel  then
                             if nosfx then return true end
                             getSoundManager():PlayWorldSoundWav("BreakObject",square, 0.5, 2, 0.5, true);
                             return true
                         end
-
+                    --[[
                         if 
                         (angle>=135 and angle<=180) and (playerPosY  < square:getY() or playerPosX  > square:getX()) or
                         (angle>=-180 and angle<=-90) and (playerPosY  > square:getY() or playerPosX  > square:getX()) or
@@ -274,66 +278,78 @@ function Advanced_trajectory.checkiswallordoor(square,angle,bulletPosition,playe
                         (angle<=90 and angle>=0) and (playerPosY  < square:getY() or playerPosX  < square:getX()) or
                         (angle<=0 and angle>=-45) and (playerPosY  > square:getY() or playerPosX  < square:getX())
                         then
-                            --print("----Facing inside into wallSE----")
+                        --print("----Facing inside into wallSE----")
+
+                    ]]--
+                    elseif Properties:Is(IsoFlagType.WallN) or (Properties:Is(IsoFlagType.doorN) and not locobject:IsOpen() )then
+                        if postion[2]  < square:getY() + intdel then
                             if nosfx then return true end
                             getSoundManager():PlayWorldSoundWav("BreakObject",square, 0.5, 2, 0.5, true);
                             return true
                         end
-
+                    --[[
                         if 
                         (angle>=135 and angle<=180) and (playerPosY  < square:getY() or playerPosX  > square:getX()) or
                         (angle>=-180 and angle<=-90) and (playerPosY  > square:getY() or playerPosX  > square:getX()) or
                         (angle>=-90 and angle<=-45) and (playerPosY  > square:getY() or playerPosX  < square:getX()) 
                         then
-                            --print("----Facing outside into wallSE----")
+                        --print("----Facing outside into wallSE----")
+                    ]]--
+                    elseif Properties:Is(IsoFlagType.WallW) or (Properties:Is(IsoFlagType.doorW) and  not locobject:IsOpen()) then
+                        if postion[1]  < square:getX() + intdel then
                             if nosfx then return true end
                             getSoundManager():PlayWorldSoundWav("BreakObject",square, 0.5, 2, 0.5, true);
                             return true
                         end
-                    elseif wallN or (doorN and not locobject:IsOpen()) then
-                        isAngleTrue = angle <=0 and angle >= -180
-                        -- facing east into wallN
-                        if (isAngleTrue) and playerPosY  > square:getY() then
-                            --print("----Facing EAST into wallN----")
-                            if nosfx then return true end
-                            getSoundManager():PlayWorldSoundWav("BreakObject",square, 0.5, 2, 0.5, true);
-                            return true
-                        end
-
-                        isAngleTrue = angle >=0 and angle <= 180
-                        -- facing west into wallN
-                        if (isAngleTrue) and playerPosY < square:getY() then
-                            --print("----Facing WEST into wallN----")
-                            if nosfx then return true end
-                            getSoundManager():PlayWorldSoundWav("BreakObject",square, 0.5, 2, 0.5, true);
-                            return true
-                        end
-
-                        --print("++++Angle was true for wallN++++")
-                    elseif wallW or (doorW and  not locobject:IsOpen()) then
-                        isAngleTrue = (angle >=0 and angle <= 90) or (angle <=0 and angle >= -90)
-                        -- facing south into wallW
-                        if (isAngleTrue) and playerPosX  < square:getX() then
-                            --print("----Facing SOUTH into wallW----")
-
-                            if nosfx then return true end
-                            getSoundManager():PlayWorldSoundWav("BreakObject",square, 0.5, 2, 0.5, true);
-                            return true
-                        end
-
-                        isAngleTrue = (angle >=90 and angle <= 180) or (angle <=-90 and angle >= -180)
-                        -- facing north into wallW
-                        if (isAngleTrue) and playerPosX  > square:getX() then
-                            --print("----Facing NORTH into wallW----")
-                            if nosfx then return true end
-                            getSoundManager():PlayWorldSoundWav("BreakObject",square, 0.5, 2, 0.5, true);
-                            return true
-                        end
-
-                        --print("++++Angle was true for wallW++++")
                     end
+                    --[[
+                        elseif wallN or (doorN and not locobject:IsOpen()) then
+                            isAngleTrue = angle <=0 and angle >= -180
+                            -- facing east into wallN
+                            if (isAngleTrue) and playerPosY  > square:getY() then
+                                --print("----Facing EAST into wallN----")
+                                if nosfx then return true end
+                                getSoundManager():PlayWorldSoundWav("BreakObject",square, 0.5, 2, 0.5, true);
+                                return true
+                            end
+
+                            isAngleTrue = angle >=0 and angle <= 180
+                            -- facing west into wallN
+                            if (isAngleTrue) and playerPosY < square:getY() then
+                                --print("----Facing WEST into wallN----")
+                                if nosfx then return true end
+                                getSoundManager():PlayWorldSoundWav("BreakObject",square, 0.5, 2, 0.5, true);
+                                return true
+                            end
+
+                            --print("++++Angle was true for wallN++++")
+                        elseif wallW or (doorW and  not locobject:IsOpen()) then
+                            isAngleTrue = (angle >=0 and angle <= 90) or (angle <=0 and angle >= -90)
+                            -- facing south into wallW
+                            if (isAngleTrue) and playerPosX  < square:getX() then
+                                --print("----Facing SOUTH into wallW----")
+
+                                if nosfx then return true end
+                                getSoundManager():PlayWorldSoundWav("BreakObject",square, 0.5, 2, 0.5, true);
+                                return true
+                            end
+
+                            isAngleTrue = (angle >=90 and angle <= 180) or (angle <=-90 and angle >= -180)
+                            -- facing north into wallW
+                            if (isAngleTrue) and playerPosX  > square:getX() then
+                                --print("----Facing NORTH into wallW----")
+                                if nosfx then return true end
+                                getSoundManager():PlayWorldSoundWav("BreakObject",square, 0.5, 2, 0.5, true);
+                                return true
+                            end
+
+                            --print("++++Angle was true for wallW++++")
+                        end
                     
 
+                    end
+
+                    ]]--
                 end
             end
         end
@@ -354,14 +370,16 @@ function Advanced_trajectory.checkiswallordoor(square,angle,bulletPosition,playe
     --         squarecar2 = vehsq:getVehicleContainer()
     --     end
     -- end
-    
-    if squarecar and ((squarecar:getX() -playerPosition[1] )^2  + (squarecar:getY() -playerPosition[2])^2)  >8 then
+
+
+    --if squarecar and ((squarecar:getX() -playerPosition[1] )^2  + (squarecar:getY() -playerPosition[2])^2)  >8 then
+    if squarecar and ((squarecar:getX() -postion2[1] )^2  + (squarecar:getY() -postion2[2])^2)  >8 then
 
 
         if nosfx then return true end
 
-
-        if ((squarecar:getX() -bulletPosition[1] )^2  + (squarecar:getY() -bulletPosition[2])^2) < 2.8  then
+        --if ((squarecar:getX() -bulletPosition[1] )^2  + (squarecar:getY() -bulletPosition[2])^2) < 2.8  then
+        if ((squarecar:getX() -postion[1] )^2  + (squarecar:getY() -postion[2])^2) < 2.8  then
 
             if getSandboxOptions():getOptionByName("AT_VehicleDamageenable"):getValue() then
 
@@ -472,7 +490,7 @@ function Advanced_trajectory.OnPlayerUpdate()
 
 
 
-    if  player:isAiming() and instanceof(weaitem,"HandWeapon") and (((weaitem:isRanged() and getSandboxOptions():getOptionByName("Advanced_trajectory.Enablerange"):getValue()) or (weaitem:getSwingAnim() =="Throw" and getSandboxOptions():getOptionByName("Advanced_trajectory.Enablethrow"):getValue())) or Advanced_trajectory.Advanced_trajectory[weaitem:getFullType()]) then
+    if player:isAiming()  and instanceof(weaitem,"HandWeapon") and (((weaitem:isRanged() and getSandboxOptions():getOptionByName("Advanced_trajectory.Enablerange"):getValue()) or (weaitem:getSwingAnim() =="Throw" and getSandboxOptions():getOptionByName("Advanced_trajectory.Enablethrow"):getValue())) or Advanced_trajectory.Advanced_trajectory[weaitem:getFullType()]) then
        
         if getSandboxOptions():getOptionByName("Advanced_trajectory.showOutlines"):getValue() then
             weaitem:setMaxHitCount(1)
@@ -485,7 +503,7 @@ function Advanced_trajectory.OnPlayerUpdate()
 
         -- print(getPlayer():getCoopPVP())
 
-        local hasChainsaw = string.contains(weaitem:getAmmoType() or "","FlameFuel")
+        --local hasChainsaw = string.contains(weaitem:getAmmoType() or "","FlameFuel")
 
         local level = 11-player:getPerkLevel(Perks.Aiming)
         local realLevel = player:getPerkLevel(Perks.Aiming)
@@ -637,13 +655,13 @@ function Advanced_trajectory.OnPlayerUpdate()
         ------------------------ ------------------------ ------------------------ 
         -- AIMNUM LIMITER SECT [ALL REALMIN CHANGES MUST BE DONE BEFORE THIS LINE]-
         ------------------------ ------------------------ ------------------------ 
-        if hasChainsaw then
-            reduceSpeed = 100
-            realMin = 0
-            Advanced_trajectory.maxaimnum = 1
-            realLevel = 10
-        end
-
+        --if hasChainsaw then
+        --    reduceSpeed = 100
+        --   realMin = 0
+        --    Advanced_trajectory.maxaimnum = 1
+        ---    realLevel = 10
+        --end
+       
         -- if counter is not used, keep minaimnum as is
         if Advanced_trajectory.maxFocusCounter >= 100 and Advanced_trajectory.minaimnum ~= realMin  then
             Advanced_trajectory.minaimnum = Advanced_trajectory.minaimnum + 2*gametimemul
@@ -1305,7 +1323,8 @@ function Advanced_trajectory.checkontick()
             if  (vt[9] ~= "Grenade" or (vt[22][8]or 0) > 0 or vt["wallcarzombie"]) and  not vt["wallcarmouse"]then
                 
                 -- bool value of whether players can damage each other with bullets
-                local isshotplayer = getSandboxOptions():getOptionByName("Advanced_trajectory.EnablePlayerDamage"):getValue()
+                --local isshotplayer = getSandboxOptions():getOptionByName("Advanced_trajectory.EnablePlayerDamage"):getValue()
+                local isshotplayer = getSandboxOptions():getOptionByName("Advanced_trajectory.playerdamage"):getValue()
 
                 -- direction of bullet
                 local angleammo = vt[5]
@@ -1344,6 +1363,7 @@ function Advanced_trajectory.checkontick()
                 local Zombie,Playershot =  Advanced_trajectory.getShootzombie({vt[4][1] + admindel*3,vt[4][2]  + admindel*3,shootlevel},1 +angleammooff ,isshotplayer)
                 
                 -- NOTES: damagezb is the damage done to zombies
+                --[[
                 local headShotDmgZomMultiplier = getSandboxOptions():getOptionByName("Advanced_trajectory.headShotDmgZomMultiplier"):getValue()
                 local bodyShotDmgZomMultiplier = getSandboxOptions():getOptionByName("Advanced_trajectory.bodyShotDmgZomMultiplier"):getValue()
                 local footShotDmgZomMultiplier = getSandboxOptions():getOptionByName("Advanced_trajectory.footShotDmgZomMultiplier"):getValue()
@@ -1351,6 +1371,10 @@ function Advanced_trajectory.checkontick()
                 local headShotDmgPlayerMultiplier = getSandboxOptions():getOptionByName("Advanced_trajectory.headShotDmgPlayerMultiplier"):getValue()
                 local bodyShotDmgPlayerMultiplier = getSandboxOptions():getOptionByName("Advanced_trajectory.bodyShotDmgPlayerMultiplier"):getValue()
                 local footShotDmgPlayerMultiplier = getSandboxOptions():getOptionByName("Advanced_trajectory.footShotDmgPlayerMultiplier"):getValue()
+                ]]--
+                local headShotDmgMultiplier = getSandboxOptions():getOptionByName("Advanced_trajectory.headShotDmgMultiplier"):getValue()
+                local bodyShotDmgMultiplier = getSandboxOptions():getOptionByName("Advanced_trajectory.bodyShotDmgMultiplier"):getValue()
+                local footShotDmgMultiplier = getSandboxOptions():getOptionByName("Advanced_trajectory.footShotDmgMultiplier"):getValue()
 
                 -- headshot on zombie
                 local damagezb = 0
@@ -1362,27 +1386,41 @@ function Advanced_trajectory.checkontick()
 
                 -- steady aim wins the game, else bodyshot damage 
                 if Advanced_trajectory.aimnumBeforeShot <= 5 then
-                    damagezb = headShotDmgZomMultiplier * vt[6]*0.1
-                    damagepr = headShotDmgPlayerMultiplier
+                    --damagezb = headShotDmgZomMultiplier * vt[6]*0.1
+                    --damagepr = headShotDmgPlayerMultiplier
+                    damagezb = headShotDmgMultiplier * vt[6]*0.1
+                    damagepr = 20
                     saywhat = "IGUI_Headshot (STRONG): " .. Advanced_trajectory.aimnumBeforeShot 
                 else
-                    damagezb = bodyShotDmgZomMultiplier*vt[6]*0.1
-                    damagepr = bodyShotDmgPlayerMultiplier
+                    --damagezb = bodyShotDmgZomMultiplier*vt[6]*0.1
+                    --damagepr = bodyShotDmgPlayerMultiplier
+                    damagezb = bodyShotDmgMultiplier*vt[6]*0.1
+                    damagepr = 2 
                     saywhat = "IGUI_Headshot (WEAK): " .. Advanced_trajectory.aimnumBeforeShot 
                 end
 
                 -- vt[4] is offset xyz
                 if not Zombie and not Playershot  then
                     Zombie,Playershot = Advanced_trajectory.getShootzombie({vt[4][1]-0.9 +angleammooff*0.45+admindel*3,vt[4][2]-0.9+angleammooff*0.45+admindel*3,shootlevel},2,isshotplayer)
-                    damagezb = bodyShotDmgZomMultiplier*vt[6]*0.1    -- zombie bodyshot
-                    saywhat = "IGUI_Bodyshot" 
-                    damagepr = bodyShotDmgPlayerMultiplier               -- player bodyshot
+                    
+                    --damagezb = bodyShotDmgZomMultiplier*vt[6]*0.1    -- zombie bodyshot
+                    --saywhat = "IGUI_Bodyshot" 
+                    --damagepr = bodyShotDmgPlayerMultiplier               -- player bodyshot
+
+                    damagezb = bodyShotDmgMultiplier*vt[6]*0.1    -- zombie bodyshot
+                    saywhat = "IGUI_Bodyshot: " .. "/" 
+                    damagepr = 2                -- player bodyshot
                 end
                 if not Zombie and not Playershot then
                     Zombie,Playershot = Advanced_trajectory.getShootzombie({vt[4][1]-1.8+0.9*angleammooff+admindel*3,vt[4][2]-1.8+0.9*angleammooff+admindel*3,shootlevel},3,isshotplayer)
-                    damagezb = footShotDmgZomMultiplier*vt[6]*0.1      -- zombie footshot
-                    saywhat = "IGUI_Footshot" 
-                    damagepr = footShotDmgPlayerMultiplier                -- player footshot
+                    
+                    --damagezb = footShotDmgZomMultiplier*vt[6]*0.1      -- zombie footshot
+                    --saywhat = "IGUI_Footshot" 
+                    --damagepr = footShotDmgPlayerMultiplier                -- player footshot
+
+                    damagezb = footShotDmgMultiplier*vt[6]*0.1      -- zombie footshot
+                    saywhat = "IGUI_Footshot: " .. "/" 
+                    damagepr = 1                -- player footshot
                 end
 
 
@@ -1405,8 +1443,10 @@ function Advanced_trajectory.checkontick()
 
 
                     -- isClient() returns true if the code is being run in MP
+
                     if isClient() then
-                        sendClientCommand("ATY_shotplayer","true",{damagepr,vt[6],Playershot:getOnlineID()})
+                        --sendClientCommand("ATY_shotplayer","true",{damagepr,vt[6],Playershot:getOnlineID()})
+                        sendClientCommand("ATY_shotplayer","true",{damagepr,vt[6],Playershot:getOnlineID(),by=vt[19]:getUsername()})
                     else
 
 
@@ -1436,11 +1476,16 @@ function Advanced_trajectory.checkontick()
                         local shotpart = BodyPartType.Foot_R
 
                         -- takes a random bodypart type from the table and adds injury to it
-                        if damagepr == headShotDmgPlayerMultiplier then
+                        --if damagepr == headShotDmgPlayerMultiplier then
+
+                        -- recall dmg = 20 for player (pr) means headshot, and 2 means bodypart, and 1 means footshot
+                        if damagepr == 20 then
                             shotpart = headpart[ZombRand(#headpart)+1]
-                        elseif damagepr == bodyShotDmgPlayerMultiplier then
+                        --elseif damagepr == bodyShotDmgPlayerMultiplier then
+                        elseif damagepr == 2 then
                             shotpart = midpart[ZombRand(#midpart)+1]
-                        elseif damagepr == footShotDmgPlayerMultiplier then
+                        --elseif damagepr == footShotDmgPlayerMultiplier then
+                        elseif damagepr == 1 then
                             shotpart = lowpart[ZombRand(#lowpart)+1]
                         end
 
@@ -1458,6 +1503,7 @@ function Advanced_trajectory.checkontick()
                             bodypart:setHaveBullet(true, 0)
                         end
 
+                        --[[
                         local playerDamageDealt = vt[6]*damagepr
                         Advanced_trajectory.dmgDealtToPlayer = playerDamageDealt
                         --local playerDmgMsg = "PlayerDmgDealt:"..tostring(math.floor(playerDamageDealt)) .."|| CH:"..tostring(math.floor(Playershot:getBodyDamage():getHealth()))
@@ -1473,6 +1519,11 @@ function Advanced_trajectory.checkontick()
                             sendServerCommand("ATY_killedplayer","true",{Playershot:getOnlineID()})
                         end
                         Advanced_trajectory.playerKilled = Playershot:getUsername() .. "("..Playershot:getOnlineID()..")"
+
+                        ]]--
+
+                        vt[19]:Say("PlayerDmg:"..tostring(math.floor(vt[6]*damagepr)) .."CH:"..tostring(math.floor(Playershot:getBodyDamage():getHealth())))
+                        Playershot:getBodyDamage():ReduceGeneralHealth(vt[6]*damagepr)
                     end
 
                     Advanced_trajectory.itemremove(vt[1])
@@ -1525,14 +1576,12 @@ function Advanced_trajectory.checkontick()
                         -- end
 
                         -- give xp upon hit
+                        -- give xp to player for shooting zombie
                         local hitXP = getSandboxOptions():getOptionByName("Advanced_trajectory.XPHitModifier"):getValue()
                         triggerEvent("OnWeaponHitCharacter", vt[19], Zombie, vt[19]:getPrimaryHandItem(), damagezb*hitXP) -- OnWeaponHitXp From "KillCount",used(wielder,victim,weapon,damage)
-                        
+
                         -- DONT USE THIS, ONLY TRIGGER EVENT
                         --vt[19]:getXp():AddXP(Perks.Aiming, vt[6]*getSandboxOptions():getOptionByName("Advanced_trajectory.XPHitModifier"):getValue(), false, false, false)
-
-
-
 
                         -- display damage done to zombie from bullet or whatever
                         if getSandboxOptions():getOptionByName("ATY_damagedisplay"):getValue() then
@@ -1827,10 +1876,7 @@ function Advanced_trajectory.OnWeaponSwing(character, handWeapon)
             local hideTracer = getSandboxOptions():getOptionByName("Advanced_trajectory.hideTracer"):getValue()
             --print("Tracer hidden: ", hideTracer)
 
-            --string.contains(weaitem:getAmmoType() or "","Arrow") or string.contains(weaitem:getAmmoType() or "","Bolt")
-
-
-            if  (string.contains(handWeapon:getAmmoType() or "","Shotgun") or string.contains(handWeapon:getAmmoType() or "","shotgun") or string.contains(handWeapon:getAmmoType() or "","shell") or string.contains(handWeapon:getAmmoType() or "","Shell")) then
+            if  (string.contains(handWeapon:getAmmoType() or "","Shotgun") or string.contains(handWeapon:getAmmoType() or "","shotgun")) then
                 local shotgunDistanceModifier = getSandboxOptions():getOptionByName("Advanced_trajectory.shotgunDistanceModifier")
                 
                 tablez[9]="Shotgun" --weapon name
@@ -1848,26 +1894,33 @@ function Advanced_trajectory.OnWeaponSwing(character, handWeapon)
                 tablez[7] = tablez[7]*0.75  --ballistic distance
                 tablez[15] = false --isthroughwall
 
+
                 --default 0.6
-                local offset = 0.2
-                tablez[4][1] = tablez[4][1]+offset*tablez[3][1]    --offsetx=offsetx +.6 * deltX; deltX is cos of dirc
-                tablez[4][2] = tablez[4][2]+offset*tablez[3][2]    --offsety=offsety +.6 * deltY; deltY is sin of dirc
-                tablez[4][3] = tablez[4][3]+0.5                 --offsetz=offsetz +.5
+                --local offset = 0.2
+                --tablez[4][1] = tablez[4][1]+offset*tablez[3][1]    --offsetx=offsetx +.6 * deltX; deltX is cos of dirc
+                --tablez[4][2] = tablez[4][2]+offset*tablez[3][2]    --offsety=offsety +.6 * deltY; deltY is sin of dirc
+                --tablez[4][3] = tablez[4][3]+0.5                 --offsetz=offsetz +.5
+
+                tablez[4][1] = tablez[4][1]+0.6*tablez[3][1]    --offsetx=offsetx +.6 * deltX; deltX is cos of dirc
+                tablez[4][2] = tablez[4][2]+0.6*tablez[3][2]    --offsety=offsety +.6 * deltY; deltY is sin of dirc
+                tablez[4][3] = tablez[4][3]+0.5                 --offsetz=offsetz +.6 
 
                 isHoldingShotgun = true
             elseif  (string.contains(handWeapon:getAmmoType() or "","Round") or string.contains(handWeapon:getAmmoType() or "","round")) then 
                 -- The idea here is to solve issue of Brita's launchers spawning a bullet along with their grenade.
                 return
-            elseif  (string.contains(handWeapon:getAmmoType() or "","FlameFuel") and string.contains(handWeapon:getName() or "","Thrower")) then 
+
+            --elseif  (string.contains(handWeapon:getAmmoType() or "","FlameFuel") and string.contains(handWeapon:getName() or "","Thrower")) then 
                 -- Break bullet if flamethrower
-                return
+             --   return
             else
                 tablez[9]="revolver"
 
                 --wpn sndfx
                 -- The idea here is to solve issue of Brita's chainsaw problem (it's a gun in disguise but with very short range).
-                local hasChainsaw = string.contains(handWeapon:getAmmoType() or "","FlameFuel") and string.contains(handWeapon:getName() or "","Chainsaw")
-                if hideTracer or hasChainsaw then
+                --local hasChainsaw = string.contains(handWeapon:getAmmoType() or "","FlameFuel") and string.contains(handWeapon:getName() or "","Chainsaw")
+                ---if hideTracer or hasChainsaw then
+                if hideTracer then
                     --print("Empty")
                     tablez[14] = "Empty.aty_revolversfx"  
                 else
@@ -1879,10 +1932,14 @@ function Advanced_trajectory.OnWeaponSwing(character, handWeapon)
                 tablez[15]  = false
             
                 --default 0.6
-                local offset = 0.2
-                tablez[4][1] = tablez[4][1]+offset*tablez[3][1]
-                tablez[4][2] = tablez[4][2]+offset*tablez[3][2]
-                tablez[4][3] = tablez[4][3]+0.5
+                --local offset = 0.2
+                --tablez[4][1] = tablez[4][1]+offset*tablez[3][1]
+                --tablez[4][2] = tablez[4][2]+offset*tablez[3][2]
+                --tablez[4][3] = tablez[4][3]+0.5
+
+                tablez[4][1] = tablez[4][1]+0.6*tablez[3][1]
+                tablez[4][2] = tablez[4][2]+0.6*tablez[3][2]
+                tablez[4][3] = tablez[4][3]+0.57
 
                 tablez["ThroNumber"] = ScriptManager.instance:getItem(handWeapon:getFullType()):getMaxHitCount()
 
@@ -1911,7 +1968,8 @@ function Advanced_trajectory.OnWeaponSwing(character, handWeapon)
     -- Shotguns - 60 to 80
     -- Lower aimnum (to reduce spamming crits with god awful bloom) and higher player level means higher crit chance.
     local critChanceModifier = getSandboxOptions():getOptionByName("Advanced_trajectory.critChanceModifier"):getValue() 
-    local critChanceAdd = (Advanced_trajectory.aimnumBeforeShot*critChanceModifier) + (11-playerlevel)
+    --local critChanceAdd = (Advanced_trajectory.aimnumBeforeShot*critChanceModifier) + (11-playerlevel)
+    local critChanceAdd = (Advanced_trajectory.aimnumBeforeShot*critChanceModifier) + playerlevel
 
     -- higher = higher crit chance
     local critIncreaseShotgun = getSandboxOptions():getOptionByName("Advanced_trajectory.critChanceModifierShotgunsOnly"):getValue() 
@@ -1934,12 +1992,16 @@ function Advanced_trajectory.OnWeaponSwing(character, handWeapon)
     tablez[12] = tablez[12]*getSandboxOptions():getOptionByName("Advanced_trajectory.bulletspeed"):getValue() 
 
     -- bullet distance
+
     -- apparently chainsaws have different ranges, wow!
-    if string.contains(handWeapon:getAmmoType() or "","FlameFuel") and string.contains(handWeapon:getName() or "","Chainsaw") then
-        tablez[7] = tablez[7]*1   -- nerf range of chainsaw
-    else
-        tablez[7] = tablez[7]*getSandboxOptions():getOptionByName("Advanced_trajectory.bulletdistance"):getValue() 
-    end
+    --if string.contains(handWeapon:getAmmoType() or "","FlameFuel") and string.contains(handWeapon:getName() or "","Chainsaw") then
+    --    tablez[7] = tablez[7]*1   -- nerf range of chainsaw
+    --else
+    tablez[7] = tablez[7]*getSandboxOptions():getOptionByName("Advanced_trajectory.bulletdistance"):getValue() 
+    --end
+
+
+
 
     ---------------------------
     -----SCOPE RANGE BUFF------
