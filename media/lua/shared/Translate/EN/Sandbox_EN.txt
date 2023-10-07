@@ -7,6 +7,15 @@ Sandbox_EN = {
 	Sandbox_Advanced_trajectoryaimpoint = "Enable The Aimpoint",
 	Sandbox_Advanced_trajectoryaimpoint_tooltip = "Show or hide crosshair.",
 
+	Sandbox_Advanced_trajectorycrosshairRedMain = "Crosshair Main Red Value",
+	Sandbox_Advanced_trajectorycrosshairRedMain_tooltip = "Linked to crosshair color. Pick a color value from 0 to 255 and divide it by 255, must be from 0 to 1.",
+
+	Sandbox_Advanced_trajectorycrosshairBlueMain = "Crosshair Main Blue Value",
+	Sandbox_Advanced_trajectorycrosshairBlueMain_tooltip = "Linked to crosshair color. Pick a color value from 0 to 255 and divide it by 255, must be from 0 to 1.",
+
+	Sandbox_Advanced_trajectorycrosshairGreenMain = "Crosshair Main Green Value",
+	Sandbox_Advanced_trajectorycrosshairGreenMain_tooltip = "Linked to crosshair color. Pick a color value from 0 to 255 and divide it by 255, must be from 0 to 1.",
+
 	Sandbox_Advanced_trajectorycrosshairRed = "Crosshair Focus Red Value",
 	Sandbox_Advanced_trajectorycrosshairRed_tooltip = "Linked to color when there is zero bloom on crosshair. Pick a color value from 0 to 255 and divide it by 255, must be from 0 to 1.",
 
@@ -89,6 +98,9 @@ Sandbox_EN = {
 
 	Sandbox_Advanced_trajectorycritChanceModifier = "Critchance Modifier",
 	Sandbox_Advanced_trajectorycritChanceModifier_tooltip = "Bloom affects crit chance. This is a multiplier to that. Set to 0 for better chances of crit.",
+
+	Sandbox_Advanced_trajectorycritChanceModifier = "Critchance Modifier (Shotguns)",
+	Sandbox_Advanced_trajectorycritChanceModifier_tooltip = "Shotguns crit chance is only affected by their stat and aiming level (not bloom). Default value is 10 meaning the game decides a random value from 1 to (100 - 10) and if value is <= crit stat, then crit.",
 
 	Sandbox_Advanced_trajectorypainModifier = "Pain Modifier",
 	Sandbox_Advanced_trajectorypainModifier_tooltip = "This value must be very small as it affects how slow your crosshair reduces bloom. This is a multiplier of the total pain value from arms and hands, which can go up to 200.",

@@ -48,8 +48,8 @@ function Advanced_trajectory.panel:prerender()
 
     -- texturescal = 14/(texturescal/multiper)
 
-
     local AR,AG,AB = 1,1,1
+    AR,AG,AB = getSandboxOptions():getOptionByName("Advanced_trajectory.crosshairRedMain"):getValue(), getSandboxOptions():getOptionByName("Advanced_trajectory.crosshairGreenMain"):getValue() , getSandboxOptions():getOptionByName("Advanced_trajectory.crosshairBlueMain"):getValue() 
 
     if Advanced_trajectory.aimnum <= 4 then
         AR,AG,AB = getSandboxOptions():getOptionByName("Advanced_trajectory.crosshairRed"):getValue(), getSandboxOptions():getOptionByName("Advanced_trajectory.crosshairGreen"):getValue() , getSandboxOptions():getOptionByName("Advanced_trajectory.crosshairBlue"):getValue() 

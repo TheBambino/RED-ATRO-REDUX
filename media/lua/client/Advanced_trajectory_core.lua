@@ -156,7 +156,7 @@ function Advanced_trajectory.checkiswallordoor(square,angle,postion,postion2,nos
                     local wallW = Properties:Is(IsoFlagType.WallW)
 
                     if wallN or wallNW or wallSE or wallW then
-                        --print("Wall N/NW/SE/W: ", wallN, "/", wallNW, "/", wallSE, "/", wallW)
+                        print("Wall N/NW/SE/W: ", wallN, "/", wallNW, "/", wallSE, "/", wallW)
                         return true
                     end
 
@@ -1695,8 +1695,11 @@ function Advanced_trajectory.OnWeaponSwing(character, handWeapon)
     -- Lower aimnum (to reduce spamming crits with god awful bloom) and higher player level means higher crit chance.
     local critChanceModifier = getSandboxOptions():getOptionByName("Advanced_trajectory.critChanceModifier"):getValue() 
     local critChanceAdd = (Advanced_trajectory.aimnumBeforeShot*critChanceModifier) + playerlevel
+
+    -- higher = higher crit chance
+    local critIncreaseShotgun = getSandboxOptions():getOptionByName("Advanced_trajectory.critChanceModifierShotgunsOnly"):getValue() 
     if isHoldingShotgun then
-        critChanceAdd = (critChanceAdd * 0) - (10 - playerlevel)
+        critChanceAdd = (critChanceAdd * 0) - (critIncreaseShotgun - playerlevel)
     end
     if ZombRand(100+critChanceAdd) <= handWeapon:getCriticalChance() then
         tablez[6]=tablez[6]*2
