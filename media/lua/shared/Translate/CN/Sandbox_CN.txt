@@ -1,0 +1,45 @@
+Sandbox_CN = {
+
+
+    Sandbox_Advanced_trajectory = "进阶弹道",
+
+
+	Sandbox_Advanced_trajectoryaimpoint = "是否启用准星",
+	Sandbox_Advanced_trajectoryfireoffset = "武器后坐力倍率",
+	Sandbox_Advanced_trajectorymaxaimnum = "初始准星扩散度",
+	Sandbox_Advanced_trajectorymoveeffect = "移动影响瞄准倍率",
+	Sandbox_Advanced_trajectoryturningeffect = "转身影响瞄准倍率",
+	Sandbox_Advanced_trajectoryreducespeed = "弹道瞄准速度倍率",
+
+	Sandbox_Advanced_trajectorybulletspeed = "弹道速率",
+	Sandbox_Advanced_trajectorybulletdistance = "弹道最大距离倍率",
+	Sandbox_Advanced_trajectoryshotgunnum = "霰弹枪基础弹丸数量",
+
+	Sandbox_Advanced_trajectorycallshot = "告知击中部位",
+
+	Sandbox_Advanced_trajectoryEnablerange = "激活远程武器效果",
+	Sandbox_Advanced_trajectoryEnablethrow = "激活投掷物效果",
+	Sandbox_Advanced_trajectoryplayerdamage = "启用对玩家伤害",
+	Sandbox_Advanced_trajectoryshotgundivision = "霰弹枪分裂范围",
+
+	Sandbox_Advanced_trajectoryATY_damage = "伤害倍率",
+
+	Sandbox_ATblood = "击中出血量多少",
+
+	Sandbox_ATvd = "子弹对载具的伤害",
+
+	Sandbox_ATvdenable = "子弹是否对载具造成伤害",
+
+	Sandbox_ATY_safezone_protect = "安全屋或安全区域内是否受到伤害",
+
+	Sandbox_ATY_nonpvp_protect = "非PVP区域内是否受到伤害",
+
+	Sandbox_ATY_damagedisplay =  "启用伤害显示",
+
+
+
+
+
+
+
+}

@@ -1,0 +1,10 @@
+IGUI_CN = {
+
+    IGUI_Headshot = "爆头！",
+    IGUI_Bodyshot = "身体！",
+    IGUI_Footshot = "脚！",
+
+
+
+
+}
