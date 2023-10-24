@@ -81,12 +81,12 @@ function Advanced_trajectory.Boom(sq,info)
 
 
     for zkl = 0,1 do
-        for i=-ExplosionRange,ExplosionRange do
-            for k=-ExplosionRange,ExplosionRange do
-                local square=getCell():getGridSquare(sq:getX()+i,sq:getY()+k,sq:getZ()+zkl)
+        for i = -ExplosionRange, ExplosionRange do
+            for k=-ExplosionRange, ExplosionRange do
+                local square=getCell():getGridSquare(sq:getX() + i, sq:getY() + k, sq:getZ() + zkl)
                 if square then
-                    local corenumber = (i^2+k^2)
-                    if ExplosionPower>100 and ZombRand(ExplosionRange^2+ExplosionRange^2)/1.5 >= corenumber then
+                    local corenumber = (i^2 + k^2)
+                    if ExplosionPower > 100 and ZombRand(ExplosionRange^2 + ExplosionRange^2) / 1.5 >= corenumber then
                         local sqz, sqObjs, objTbl, cell = Advanced_trajectory.sqobject(square)
                         local z = sq:getZ()
                         for izk = 1, #objTbl do
@@ -140,7 +140,8 @@ function Advanced_trajectory.Boom(sq,info)
                         local zombiez = movingObjects:get(zz-1)
                         if instanceof(zombiez,"IsoZombie") then
                             zombiez:knockDown(false)
-                            if ZombRand(ExplosionRange^2+ExplosionRange^2) >= corenumber then
+                            if ZombRand(ExplosionRange^2 + ExplosionRange^2) >= corenumber then
+
                                 zombiez:Kill(player)
                                
                             end
@@ -148,9 +149,8 @@ function Advanced_trajectory.Boom(sq,info)
                         elseif getSandboxOptions():getOptionByName("Advanced_trajectory.playerdamage"):getValue() and instanceof(zombiez,"IsoPlayer") then
     
                             if isClient() then
-                                sendClientCommand("ATY_reducehealth","true",{ExplosionPower,zombiez:getOnlineID()})
-    
-    
+
+                                sendClientCommand("ATY_reducehealth", "true", {ExplosionPower, zombiez:getOnlineID()})
     
                             else
                                 zombiez:getBodyDamage():ReduceGeneralHealth(ExplosionPower)
@@ -158,7 +158,7 @@ function Advanced_trajectory.Boom(sq,info)
                             
     
                         end
-                    end 
+                    end
                     
                 end
             end
